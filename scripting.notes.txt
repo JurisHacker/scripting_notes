@@ -1,0 +1,135 @@
+## for loop
+for item in `cat $somefile`			# look for "item" in "somefile"
+do
+	echo -n $item>> someotherfile  		# echo something without adding newline character
+	echo -n "	" >> someotherfile 	# echo a tab without adding newline
+	grep -c $item somefile >> someotherfile
+done
+
+
+## To send stdout and stderr send to stdout and a file
+#!/bin/basH
+logfile=$$.log
+exec > $logfile 2>&1
+
+
+## Rename all files in a directory
+for i in *.jpg; do mv -i "$i" "PREFIX.$i"; done
+
+
+## Find the top 10 words used in a text file (useful for password dumps)
+sort <file> | uniq -c | sort -r | head
+
+
+## Sort two words
+egrep '(string1|string2)' file
+
+
+## Sort IP addresses the right way
+sort -n -t. +0 -1 +1 -2 +2 -3 +3 -4
+
+
+## Delete files (by extension) in multiple sub-direcories
+find ~/ -name *.log -exec rm {} /;
+
+
+## Perform ROT13 transform on something
+/usr/bin/tr A-Za-z N-ZA-Mn-za-m
+
+
+## Generate a random 32 character alpha-numeric string
+head /dev/urandom | md5sum | awk '{print $1}'
+
+
+## Define multiple field separators in awk
+gawk -v FS="[ :(]" '{print ...}'
+
+
+## This line will search my syslog for ICMP type 8/0 entries print the source IP, sorted (correctly), then grep for IP ranges.
+grep 8\/0 /cygdrive/c/syslog/syslog.log | awk '{print $12}' | sort -n -t. +0 -1 +1 -2 +2 -3 +3 -4 -u | egrep 10.1[2-7] > outfile.txt
+
+
+## Grep syslog for port 135, awk it (removing source port) for source IP, then hunt for unique IP addresses
+grep \(135\) /cygdrive/c/syslog/syslog.log | awk -v FS="[ (]" '{print $12}' | egrep 10.1[2-7] | sort -u
+
+
+## count number of times each day port 443 was denied entry
+grep \(443\)\, /cygdrive/c/syslog/syslog.log | awk {'print $1 " " $2'} | uniq -c | awk {'print $2 " " $3 "\t" $1'}
+
+
+## GNU date is your friend 
+$ date 
+Mon May 17 15:12:45 CEST 2004 
+
+$ date -d yesterday 
+Sun May 16 15:13:03 CEST 2004 
+
+$ date -d tomorrow 
+TuE May 18 15:13:32 CEST 2004 
+
+$ date -d "1 day ago" 
+Sun May 16 15:13:03 CEST 2004 
+
+$ date -d "Oct 10 1984 2 day ago" 
+Mon Oct  8 00:00:00 CET 1984 
+
+$ date -d "2006-10-26 18:35:00 2 day ago" 
+Tue Oct 24 18:35:00 CEST 2006 
+
+$ date -d "2006-10-26 18:35:00 2 day ago 3 hours" 
+Tue Oct 24 21:35:00 CEST 2006 
+
+$ date -d "2006-10-26 18:35:00 2 day ago 3 hours ago" 
+Sat Oct 28 15:35:00 CEST 2006
+
+$ date +%Y%m%d
+20081006
+
+
+## To pull something (hashes) from a file based on content of another file (names)
+## file1 the list of 200 names you want
+## file2 the 3000 line list of names /hashes
+## file will be the new list of your 200 names/hashes
+grep -F --file=file1 file2 >file3
+
+
+## Sort through "Joe Job" file in email
+grep "^To:" Joe\ Job | grep "@domain.com" | awk -F "[:< ]" '{print $NF}' | awk -F \> '{print $1}' | sort -u | head
+
+
+## Remove (or print, depending on how you look at it) every other line in a file
+cat file.txt | awk '((NR % 2) == 0) {print}' > newfile.txt
+
+
+## grep a log file for events that occured yesterday
+cat temp.out | grep "`date -d yesterday +%b" "%e`" > ylogs.out
+
+
+## grep logs for an email failure
+grep in.qpopper /var/log/secure | grep refused | grep "`date +%b" "%e" "%H`" 
+
+
+## search the /usr/include directory for the names of files contaiing the phrase "socaddr_in"
+find /usr/include -type f | xargs grep -l sockaddr_in
+
+
+# Email my the stats file
+echo "To: user@domain.com" > /home/log/spam/email.txt
+echo "Subject: Daily SPAM log" >> /home/log/spam/email.txt
+echo "  " >> /home/log/spam/email.txt
+echo `cat /home/log/spam/stats.txt` >> /home/log/spam/email.txt
+echo "." >> /home/log/spam/email.txt
+cat /home/log/spam/email.txt | /usr/sbin/sendmail user@domain.com
+
+
+
+# Attaching a file to email via sendmail
+uuencode infile outfile | mailx -s "Subject" user@domain.com
+#  IF YOU WANT TO SEE THE ATTACHMENT IN THE BODY, USE a ".txt" EXTENTION ON THE OUTFILE
+
+
+# This is a wierd think to replace a space with a comma in the last feild of a row.  I needed to create a separate column in a CSV file
+cat filename.csv | awk -F ",|-" '{print $1 "," $2 "," $3 "," $5}' | awk '{gsub(" ", ",", $NF); print }'
+
+
+

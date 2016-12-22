@@ -1,0 +1,14 @@
+MySQL notes:
+   To run a gzipped sql script to create a database and tables
+   $ zcat create_schema.gz | mysql -u <user> -h <host> -p <databasename>
+
+
+   To create a database and set permissions, run as admin
+  $ mysql
+  mysql> CREATE DATABASE dbname
+  mysql> grant CREATE, INSERT, SELECT, UPDATE on dbname.* to dbuser@localhost;
+  mysql> grant CREATE, INSERT, SELECT, UPDATE on dbname.* to dbuser;
+  mysql> SET PASSWORD FOR dbuser@localhost=PASSWORD('dbpassword');
+  mysql> flush privileges;
+  [ you can confirm the changes above running ]
+  mysql> show grants for 'dbname'@'localhost';

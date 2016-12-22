@@ -1,0 +1,14 @@
+From:  http://www.myonlinetraininghub.com/excel-factor-19-dynamic-dependent-data-validation
+
+First make the list (across) on a sheet named tbl_data.  The formula below assums you are starting on B2.  Define a "name" categories:
+
+Refers to: =tbl_data!$B$2:INDEX(tbl_data!$2:$2,,COUNTA(tbl_data!$2:$2)+1)
+
+Then select your "B2" above and define a name "choice"
+
+Refers to: =IF(ISBLANK(!A2),Categories,OFFSET(INDEX(Categories,,MATCH(!A2,Categories,)),1,, COUNTA(OFFSET(INDEX(Categories,,MATCH(!A2,Categories,)),1,,100))))
+
+Then setup data validation:  Select the cells you want validated, then 
+
+Source:  =Choice
+ 
