@@ -131,5 +131,5 @@ uuencode infile outfile | mailx -s "Subject" user@domain.com
 # This is a wierd think to replace a space with a comma in the last feild of a row.  I needed to create a separate column in a CSV file
 cat filename.csv | awk -F ",|-" '{print $1 "," $2 "," $3 "," $5}' | awk '{gsub(" ", ",", $NF); print }'
 
-
-
+# Grep multiple word (or lines) in a file
+grep -E 'DocViewer|Author|Caption' somefile
