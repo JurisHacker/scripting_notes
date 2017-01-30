@@ -1,14 +1,24 @@
-From:  http://www.myonlinetraininghub.com/excel-factor-19-dynamic-dependent-data-validation
+ ######### 
+ ##Counting the number of times each type of event occurs between two dates
+ #########
+ ## Table1 Layout
+Event      Action	Date	   Type of Event
+evnet1	    12/2/2016	     Blog
+event2    	12/6/2016	     News 
+event3     12/7/2016	     Networking
+event4     12/8/2016	     Blog
+event5     12/12/2016	    News 
 
-First make the list (across) on a sheet named tbl_data.  The formula below assums you are starting on B2.  Define a "name" categories:
+-cont-
+## Counting table
+		           Blog News Netorking
+11/28/2016	  1	   0	   0
+12/5/2016	   1	   1	   1
+12/12/2016	  0	   1	   0
+12/19/2016	  0	   0	   0
 
-Refers to: =tbl_data!$B$2:INDEX(tbl_data!$2:$2,,COUNTA(tbl_data!$2:$2)+1)
+-cont-
+## Formula in B2 
+=COUNTIFS(TABLE1!$B:$B,">="&TABLE2!$A2,TABLE1!$B:$B,"<"&TABLE2!$A3,TABLE1!$C:$C,TABLE2!C$1)
 
-Then select your "B2" above and define a name "choice"
 
-Refers to: =IF(ISBLANK(!A2),Categories,OFFSET(INDEX(Categories,,MATCH(!A2,Categories,)),1,, COUNTA(OFFSET(INDEX(Categories,,MATCH(!A2,Categories,)),1,,100))))
-
-Then setup data validation:  Select the cells you want validated, then 
-
-Source:  =Choice
- 
