@@ -133,3 +133,8 @@ cat filename.csv | awk -F ",|-" '{print $1 "," $2 "," $3 "," $5}' | awk '{gsub("
 
 # Grep multiple word (or lines) in a file
 grep -E 'DocViewer|Author|Caption' somefile
+
+# Some random thing someone on IRC asked about
+# displays all characters of 'x' (3 below) length in a text file (data.txt) and sorts by times that pattern occurs
+foo=`cat data.txt` | for (( i=0; i<${#foo}; i++));do echo "${foo:$i:3}"; done | sort | uniq -c | sort -r
+
